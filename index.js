@@ -8,6 +8,10 @@ const app = express()
 app.use(cors("*"))
 app.use(bodyParser.json());
 
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+})
+
 app.post('/api/v1/upload', mediaUpload)
 
 const PORT = process.env.PORT || 3000;
