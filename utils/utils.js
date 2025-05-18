@@ -73,9 +73,9 @@ export async function getWixAccessToken() {
 
   const data = {
     grant_type: 'client_credentials',
-    client_id: 'beb320c4-03d1-44c1-9e2a-3982b7ea8bde',
-    client_secret: 'a3b036b4-8ff4-4b9a-a906-82504f45681f',
-    instance_id: '2a44f71f-0dbb-411a-9826-501e4359108c'
+    client_id: "5608e46e-7302-4d54-85f6-688d8c1973e5",
+    client_secret: "bb4f2ea9-5eec-48f4-8013-6980220acf7b",
+    instance_id: "e5c9cee9-10c2-4274-afbb-6237e6e32ad6"
   };
 
   try {
