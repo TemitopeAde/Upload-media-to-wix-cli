@@ -96,51 +96,49 @@ app.post('/api/v1/upload', mediaUpload)
 // })
 
 
-app.post("/v1/listTriggers", (req, res) => {
-  console.log("🔥 Received request from Wix to list triggers");
-
-  const customTriggers = [
-    {
-      id: "paid-plan",
-      name: "Customer has a paid plan"
-    },
-    {
-      id: "happy-hour",
-      name: "Happy Hour (Weekdays 4–6PM)"
-    }
-  ];
-
-  res.status(200).json({ customTriggers });
-});
-
 app.post("/v1/get-eligible-triggers", (req, res) => {
   try {
-    const { request, metadata } = req.body;
-
-    console.log("get-eligible-triggers request:", request);
-    console.log("metadata:", metadata);
-
     const now = new Date();
-    const currentHour = now.getUTCHours();
-    const currentDay = now.getUTCDay();
+    const currentMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+    const happyHourStart = 16 * 60;
+    const happyHourEnd = 18 * 60;
 
     let eligibleTriggers = [];
 
-    if (currentDay >= 1 && currentDay <= 5 && currentHour >= 16 && currentHour < 18) {
+    if (currentMinutes >= happyHourStart && currentMinutes < happyHourEnd) {
       eligibleTriggers.push("happy-hour");
     }
 
     res.status(200).json({ eligibleTriggerIds: eligibleTriggers });
 
   } catch (error) {
-    console.error("Error in get-eligible-triggers:", error);
-
     res.status(500).json({
       message: "Failed to get eligible triggers",
       error: error.message,
     });
   }
 });
+
+
+app.post("/v1/list-triggers", (req, res) => {
+  try {
+    res.status(200).json({
+      customTriggers: [
+        {
+          id: "happy-hour",
+          name: "Happy Hour (Every day 16:00–18:00)"
+        },
+        {
+          id: "paid-plan-discount",
+          name: "Customer with Active Paid Plan"
+        }
+      ]
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 
 const PORT = process.env.PORT || 3000;
