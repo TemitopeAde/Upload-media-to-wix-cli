@@ -59,7 +59,97 @@ wixClient.customTriggers.publicProvideHandlers({
 })
 
 app.post('/api/v1/upload', mediaUpload)
-app.post("/v1/getEligibleTriggers", (req, res) => {
+
+app.post("v1/getEligibleTriggers", (req, res) => {
+  try {
+    const body = req.body
+    console.log(body);
+
+    res.status(200).json({
+      message: true,
+      data: body
+    })
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: error
+    })
+  }
+})
+app.post("v1/getEligibleTriggers", (req, res) => {
+  try {
+    const body = req.body
+    console.log(body);
+
+    res.status(200).json({
+      message: true,
+      data: body
+    })
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: error
+    })
+  }
+})
+
+
+app.post("v1/list-triggers", (req, res) => {
+  try {
+    const body = req.body
+    console.log(body);
+
+    res.status(200).json({
+      message: true,
+      data: body
+    })
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: error
+    })
+  }
+})
+app.post("v1/get-eligible-triggers", (req, res) => {
+  try {
+    const body = req.body
+    console.log(body);
+
+    res.status(200).json({
+      message: true,
+      data: body
+    })
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: error
+    })
+  }
+})
+
+
+app.post("/v1/list-triggers", (req, res) => {
+  try {
+    const body = req.body
+    console.log(body);
+
+    res.status(200).json({
+      message: true,
+      data: body
+    })
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: error
+    })
+  }
+})
+app.post("/v1/get-eligible-triggers", (req, res) => {
   try {
     const body = req.body
     console.log(body);
