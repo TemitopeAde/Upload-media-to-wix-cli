@@ -40,7 +40,6 @@ wixClient.customTriggers.publicProvideHandlers({
       console.log("get", metadata, request);
     } catch (error) {
       console.log(error);
-
     }
 
   },
@@ -48,8 +47,9 @@ wixClient.customTriggers.publicProvideHandlers({
   listTriggers: async (payload) => {
     try {
       const { request, metadata } = payload
+      const cart = payload.metadata.
 
-      console.log("list", metadata, request);
+        console.log("list", metadata, request);
     } catch (error) {
       console.log(error);
 
@@ -60,112 +60,88 @@ wixClient.customTriggers.publicProvideHandlers({
 
 app.post('/api/v1/upload', mediaUpload)
 
-app.post("v1/getEligibleTriggers", (req, res) => {
-  try {
-    const body = req.body
-    console.log(body);
+// app.post("v1/list-triggers", (req, res) => {
+//   try {
+//     const body = req.body
+//     console.log(body);
 
-    res.status(200).json({
-      message: true,
-      data: body
-    })
-  } catch (error) {
-    console.log(error);
+//     res.status(200).json({
+//       message: true,
+//       data: body
+//     })
+//   } catch (error) {
+//     console.log(error);
 
-    res.status(500).json({
-      message: error
-    })
-  }
-})
-app.post("v1/getEligibleTriggers", (req, res) => {
-  try {
-    const body = req.body
-    console.log(body);
+//     res.status(500).json({
+//       message: error
+//     })
+//   }
+// })
+// app.post("v1/get-eligible-triggers", (req, res) => {
+//   try {
+//     const body = req.body
+//     console.log(body);
 
-    res.status(200).json({
-      message: true,
-      data: body
-    })
-  } catch (error) {
-    console.log(error);
+//     res.status(200).json({
+//       message: true,
+//       data: body
+//     })
+//   } catch (error) {
+//     console.log(error);
 
-    res.status(500).json({
-      message: error
-    })
-  }
-})
-
-
-app.post("v1/list-triggers", (req, res) => {
-  try {
-    const body = req.body
-    console.log(body);
-
-    res.status(200).json({
-      message: true,
-      data: body
-    })
-  } catch (error) {
-    console.log(error);
-
-    res.status(500).json({
-      message: error
-    })
-  }
-})
-app.post("v1/get-eligible-triggers", (req, res) => {
-  try {
-    const body = req.body
-    console.log(body);
-
-    res.status(200).json({
-      message: true,
-      data: body
-    })
-  } catch (error) {
-    console.log(error);
-
-    res.status(500).json({
-      message: error
-    })
-  }
-})
+//     res.status(500).json({
+//       message: error
+//     })
+//   }
+// })
 
 
-app.post("/v1/list-triggers", (req, res) => {
-  try {
-    const body = req.body
-    console.log(body);
+app.post("/v1/listTriggers", (req, res) => {
+  console.log("🔥 Received request from Wix to list triggers");
 
-    res.status(200).json({
-      message: true,
-      data: body
-    })
-  } catch (error) {
-    console.log(error);
+  const customTriggers = [
+    {
+      id: "paid-plan",
+      name: "Customer has a paid plan"
+    },
+    {
+      id: "happy-hour",
+      name: "Happy Hour (Weekdays 4–6PM)"
+    }
+  ];
 
-    res.status(500).json({
-      message: error
-    })
-  }
-})
+  res.status(200).json({ customTriggers });
+});
+
 app.post("/v1/get-eligible-triggers", (req, res) => {
   try {
-    const body = req.body
-    console.log(body);
+    const { request, metadata } = req.body;
 
-    res.status(200).json({
-      message: true,
-      data: body
-    })
+    console.log("get-eligible-triggers request:", request);
+    console.log("metadata:", metadata);
+
+    const now = new Date();
+    const currentHour = now.getUTCHours();
+    const currentDay = now.getUTCDay();
+
+    let eligibleTriggers = [];
+
+    if (currentDay >= 1 && currentDay <= 5 && currentHour >= 16 && currentHour < 18) {
+      eligibleTriggers.push("happy-hour");
+    }
+
+    res.status(200).json({ eligibleTriggerIds: eligibleTriggers });
+
   } catch (error) {
-    console.log(error);
+    console.error("Error in get-eligible-triggers:", error);
 
     res.status(500).json({
-      message: error
-    })
+      message: "Failed to get eligible triggers",
+      error: error.message,
+    });
   }
-})
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
